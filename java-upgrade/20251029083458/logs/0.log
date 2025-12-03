@@ -1,0 +1,22 @@
+2025-10-29T08:34:58.793Z [INFO] ----------------------invoke generate_upgrade_plan_for_java_project----------------------
+2025-10-29T08:34:58.794Z [INFO] [Tool.invoke]({name: generate_upgrade_plan_for_java_project, input: {
+  "projectPath": "c:\\Users\\Rasyad\\OneDrive\\Documents\\Kuliah Semester 3\\PRAKTIKUM JAVA\\Javawebgui\\demo",
+  "targetJavaVersion": "21"
+}}).
+2025-10-29T08:34:58.794Z [INFO] [Plan.tryStartTask]({tool:generate_upgrade_plan_for_java_project, nextTask:{type:undefined, tool:undefined}}
+2025-10-29T08:34:58.794Z [INFO] [Plan.tryStartTask]: no next task, create new one.
+2025-10-29T08:34:58.794Z [INFO] [Plan.createTaskAtStart]({tool: generate_upgrade_plan_for_java_project, input: {
+  "projectPath": "c:\\Users\\Rasyad\\OneDrive\\Documents\\Kuliah Semester 3\\PRAKTIKUM JAVA\\Javawebgui\\demo",
+  "targetJavaVersion": "21",
+  "sessionId": "20251029083458"
+}}).
+2025-10-29T08:34:58.795Z [INFO] [Plan.tryStartTask]: starting task generatePlan
+2025-10-29T08:34:58.795Z [INFO] [Task.start](): Starting task generatePlan
+2025-10-29T08:34:58.796Z [INFO] [Task.start](1): Started task generatePlan
+2025-10-29T08:34:58.800Z [INFO] [Tool.invoke] validate GitHub Copilot license.
+2025-10-29T08:35:32.840Z [INFO] Copilot user info:undefined
+2025-10-29T08:35:32.841Z [WARN] "GitHub Copilot app modernization - upgrade for Java" and its tools are only available for GitHub Copilot "Pro", "Pro+", "Business" and "Enterprise" plans.
+2025-10-29T08:35:32.842Z [ERROR] [Tool.invoke] error occurs when invoking tool generate_upgrade_plan_for_java_project: UnsupportedCopilotPlanError: "GitHub Copilot app modernization - upgrade for Java" and its tools are only available for GitHub Copilot "Pro", "Pro+", "Business" and "Enterprise" plans.. Please upgrade your GitHub Copilot plan to use this feature or upgrading this project using other tools you prefer..
+2025-10-29T08:35:32.842Z [INFO] [Task.complete](1): Completing task generatePlan
+2025-10-29T08:35:32.843Z [INFO] ----------------------invoked generate_upgrade_plan_for_java_project----------------------
+2025-10-29T08:35:32.843Z [INFO] [Task.complete](1): Completed task generatePlan

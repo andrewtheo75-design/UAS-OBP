@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pembayaran</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+ 
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Captain Pembayaran</h1>
+        </div>
+        <ul class="nav-menu">
+        <li><a th:href="@{/mobil}">Mobil</a></li>
+        <li><a th:href="@{/motor}">Motor</a></li>
+        <li><a th:href="@{/sepeda}">Sepeda</a></li>
+        <li><a th:href="@{/penyewa}">Penyewa</a></li>
+        <li><a th:href="@{/transaksi}">Transaksi</a></li>
+        <li><a th:href="@{/pembayaran}">pembayaran</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+ 
+    <div class="first-box">
+        <h2>Daftar Pembayaran</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Transaksi ID</th>
+                    <th>Jumlah Bayar</th>
+                    <th>Metode</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody th:each="p, no : ${pembayaranList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+                    <td>
+                        <a th:href="@{/pembayaran/{id}(id=${p.id})}" th:text="${p.id}"></a>
+                    </td>
+                    <td th:text="${p.transaksi?.id}"></td>
+                    <td th:text="${'Rp ' + #numbers.formatDecimal(p.jumlahBayar, 1, 'POINT', 2, 'COMMA')}"></td>
+                    <td th:text="${p.metodePembayaran}"></td>
+                    <td>
+                        <span th:if="${p.statusPembayaran == 'PENDING'}" style="color: orange; font-weight: bold;">PENDING</span>
+                        <span th:if="${p.statusPembayaran == 'PROSES'}" style="color: blue; font-weight: bold;">PROSES</span>
+                        <span th:if="${p.statusPembayaran == 'SUCCESS'}" style="color: green; font-weight: bold;">SUCCESS</span>
+                        <span th:if="${p.statusPembayaran == 'FAILED'}" style="color: red; font-weight: bold;">FAILED</span>
+                    </td>
+                    <td th:text="${#temporals.format(p.tanggalPembayaran, 'dd/MM/yyyy HH:mm')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ 
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Pembayaran</h2>
+            <form th:action="@{/pembayaran}" method="post" th:object="${pembayaranRec}" class="form-group">
+               
+                <input type="hidden" name="id" th:value="${pembayaranRec?.id}" />
+               
+                <label>ID Pembayaran</label>
+                <input type="number" name="idPembayaran" th:value="${pembayaranRec?.idPembayaran}" readonly />
+ 
+                <label>Transaksi</label>
+                <select name="transaksi" required>
+                    <option value="">-- Pilih Transaksi --</option>
+                    <option th:each="t : ${transaksiList}"
+                            th:value="${t.idTransaksi}"
+                            th:text="'Transaksi ' + ${t.idTransaksi}"
+                            th:selected="${pembayaranRec?.transaksi?.idTransaksi == t.idTransaksi}">
+                    </option>
+                </select>
+ 
+                <label>Jumlah Bayar</label>
+                <input type="number" name="jumlahBayar" th:value="${pembayaranRec?.jumlahBayar}" required step="0.01" />
+ 
+                <label>Metode Pembayaran</label>
+                <select name="metodePembayaran" required>
+                    <option value="">-- Pilih Metode --</option>
+                    <option value="TRANSFER" th:selected="${pembayaranRec?.metodePembayaran == 'TRANSFER'}">Transfer Bank</option>
+                    <option value="CASH" th:selected="${pembayaranRec?.metodePembayaran == 'CASH'}">Cash</option>
+                    <option value="QRIS" th:selected="${pembayaranRec?.metodePembayaran == 'QRIS'}">QRIS</option>
+                    <option value="E-WALLET" th:selected="${pembayaranRec?.metodePembayaran == 'E-WALLET'}">E-Wallet</option>
+                </select>
+ 
+                <label>Status Pembayaran</label>
+                <select name="statusPembayaran" required>
+                    <option value="PENDING" th:selected="${pembayaranRec?.statusPembayaran == 'PENDING'}">PENDING</option>
+                    <option value="PROSES" th:selected="${pembayaranRec?.statusPembayaran == 'PROSES'}">PROSES</option>
+                    <option value="SUCCESS" th:selected="${pembayaranRec?.statusPembayaran == 'SUCCESS'}">SUCCESS</option>
+                    <option value="FAILED" th:selected="${pembayaranRec?.statusPembayaran == 'FAILED'}">FAILED</option>
+                </select>
+ 
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+                <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+            </form>
+ 
+            <div style="margin-top: 20px;">
+                <a th:href="@{/pembayaran/proses/{id}(id=${pembayaranRec?.id})}"
+                   class="btn btn-primary"
+                   th:if="${pembayaranRec?.statusPembayaran == 'PENDING'}">Proses Pembayaran</a>
+               
+                <a th:href="@{/pembayaran/konfirmasi/{id}(id=${pembayaranRec?.id})}"
+                   class="btn btn-primary"
+                   th:if="${pembayaranRec?.statusPembayaran == 'PROSES'}">Konfirmasi Success</a>
+               
+                <a th:href="@{/pembayaran/batal/{id}(id=${pembayaranRec?.id})}"
+                   class="btn btn-primary"
+                   th:if="${pembayaranRec?.statusPembayaran != 'FAILED' && pembayaranRec?.statusPembayaran != 'SUCCESS'}">Batalkan</a>
+            </div>
+        </div>
+    </div>
+ 
+</body>
+</html>
+ 

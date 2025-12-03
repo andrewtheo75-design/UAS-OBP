@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mobil Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left"><h1 class="logo">Captain Mobil</h1></div>
+    <ul class="nav-menu">
+        <li><a th:href="@{/mobil}">Mobil</a></li>
+        <li><a th:href="@{/motor}">Motor</a></li>
+        <li><a th:href="@{/sepeda}">Sepeda</a></li>
+        <li><a th:href="@{/penyewa}">Penyewa</a></li>
+        <li><a th:href="@{/transaksi}">Transaksi</a></li>
+        <li><a th:href="@{/pembayaran}">Pembayaran</a></li>
+    </ul>
+    <div class="nav-right">
+        <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+    </div>
+</nav>
+
+<div class="welcome-message" th:if="${logSeller != null}">
+    Welcome <span th:text="${logSeller.kode}"></span>
+</div>
+
+<div class="first-box">
+    <h2>Mobil List</h2>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>Merk</th>
+                <th>Model</th>
+                <th>Tahun</th>
+                <th>Harga Sewa</th>
+                <th>Kapasitas</th>
+                <th>Jenis BBM</th>
+            </tr>
+        </thead>
+
+        <tbody th:each="m, no : ${mobilList}">
+            <tr>
+                <td th:text="${no.count}"></td>
+
+                <td>
+                    <a th:href="@{/mobil/{id}(id=${m.id})}" th:text="${m.id}"></a>
+                </td>
+
+                <td th:text="${m.merk}"></td>
+                <td th:text="${m.model}"></td>
+                <td th:text="${m.tahun}"></td>
+                <td th:text="${m.hargaSewa}"></td>
+                <td th:text="${m.kapasitas}"></td>
+                <td th:text="${m.jenisBBM}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- FORM -->
+<div class="second-box">
+    <div id="feedback-form">
+        <h2 class="header">Form Management Mobil</h2>
+
+      <form th:action="@{/mobil}" method="post" th:object="${mobilInfo}" class="form-group">
+
+    <!-- hidden ID untuk dikirim -->
+    <input type="hidden" name="id" th:value="${mobilRec?.id}" />
+
+    <label>ID</label>
+    <input type="number" th:value="${mobilRec?.id}" readonly />
+
+    <label>Merk</label>
+    <input type="text" name="merk" th:value="${mobilRec?.merk}" required />
+
+    <label>Model</label>
+    <input type="text" name="model" th:value="${mobilRec?.model}" required />
+
+    <label>Tahun</label>
+    <input type="number" name="tahun" th:value="${mobilRec?.tahun}" required />
+
+    <label>Harga Sewa</label>
+    <input type="number" name="hargaSewa" th:value="${mobilRec?.hargaSewa}" required />
+
+    <label>Kapasitas</label>
+    <input type="number" name="kapasitas" th:value="${mobilRec?.kapasitas}" required />
+
+    <label>Jenis BBM</label>
+    <input type="text" name="jenisBBM" th:value="${mobilRec?.jenisBBM}" required />
+
+    <button type="submit" name="add" value="add" class="btn btn-primary">Add</button>
+
+    <button type="submit" name="edit" value="edit" class="btn btn-primary">Edit</button>
+
+    <button type="submit" name="delete" value="delete" class="btn btn-primary"
+            th:data-confirm-delete="|Are you sure want to delete ${mobilRec?.id}?|"
+            onclick="return confirm(this.getAttribute('data-confirm-delete'))">
+        Delete
+    </button>
+
+</form>
+
+    </div>
+</div>
+
+</body>
+</html>

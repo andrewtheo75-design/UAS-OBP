@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Seller Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+    <script th:src="@{/js/pass.js}"></script>
+</head>
+<body>
+
+    <!-- NAVBAR START -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Penyewaan Kendaraan</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/mobil}">Mobil</a></li>
+            <li><a th:href="@{/motor}">Motor</a></li>
+            <li><a th:href="@{/sepeda}">Sepeda</a></li>
+            <li><a th:href="@{/penyewa}">Penyewa</a></li>
+            <li><a th:href="@{/transaksi}">Transaksi</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+    <!-- NAVBAR END -->
+
+    <div class="welcome-message" th:if="${logSeller != null}">
+        Welcome <span th:text="${logSeller.getKode()}"></span>
+    </div>
+
+    <div class="first-box">
+        <h2>Seller List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kode</th>
+                    <th>Name</th>
+                    <th>No Handphone</th>
+                </tr>
+            </thead>
+            <tbody th:each="d, no : ${sellerList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+                    <td>
+                        <a th:href="@{/seller/{id}(id=${d.getId()})}" 
+                           th:text="${d.getKode()}"></a>
+                    </td>
+                    <td th:text="${d.getName()}"></td>
+                    <td th:text="${d.getNoHP()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management</h2>
+
+           <form th:action="${sellerRec == null} ? @{/seller/submit/} : @{/seller/submit/{id}(id=${sellerRec.getId()})}"
+      method="post" th:object="${sellerInfo}" class="form-group">
+
+                <label for="id">ID</label>
+                <input type="number" id="id" name="id" 
+                       th:value="${sellerRec != null} ? ${sellerRec.getId()} : '0'" readonly />
+
+                <label for="kode">Kode</label>
+                <input type="text" id="kode" name="kode" th:value="${sellerRec?.getKode()}" required />
+
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" th:value="${sellerRec?.getName()}" required />
+
+                <label for="noHP">No HP</label>
+                <input type="text" id="noHP" name="noHP" th:value="${sellerRec?.getNoHP()}" required />
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" th:value="${sellerRec?.getPassword()}" required />
+
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" id="cpassword" name="cpassword" th:onkeyup="checkPass()" required />
+                <div id="warning"></div>
+
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+
+                <button type="submit" class="btn btn-primary" name="delete"
+                        th:data-confirm-delete="|Are you sure you want to delete seller ${sellerRec?.getId()}?|"
+                        onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

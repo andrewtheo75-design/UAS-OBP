@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sepeda Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Captain Sepeda</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/mobil}">Mobil</a></li>
+            <li><a th:href="@{/motor}">Motor</a></li>
+            <li><a th:href="@{/sepeda}">Sepeda</a></li>
+            <li><a th:href="@{/penyewa}">Penyewa</a></li>
+           <li><a th:href="@{/transaksi}">Transaksi</a></li>
+           <li><a th:href="@{/pembayaran}">pembayaran</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+
+    <!-- Welcome -->
+    <div class="welcome-message" th:if="${logSeller != null}">
+        Welcome <span th:text="${logSeller.getKode()}"></span>
+    </div>
+
+    <!-- LIST SEPEDA -->
+    <div class="first-box">
+        <h2>Sepeda List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Merk</th>
+                    <th>Model</th>
+                    <th>Tahun</th>
+                    <th>Harga Sewa</th>
+                    <th>Tipe Sepeda</th>
+                </tr>
+            </thead>
+            <tbody th:each="s, no : ${sepedaList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+                    <td>
+                        <a th:href="@{/sepeda/{id}(id=${s.getId()})}"
+                           th:text="${s.getId()}"></a>
+                    </td>
+                    <td th:text="${s.getMerk()}"></td>
+                    <td th:text="${s.getModel()}"></td>
+                    <td th:text="${s.getTahun()}"></td>
+                    <td th:text="${s.getHargaSewa()}"></td>
+                    <td th:text="${s.getTipe()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FORM SEPEDA -->
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Sepeda</h2>
+
+            <form th:action="@{/sepeda}"
+                  method="post" th:object="${sepedaInfo}" class="form-group">
+
+                <label>ID</label>
+                <input type="number" name="id"
+                       th:value="${sepedaRec != null} ? ${sepedaRec.getId()} : ''"
+                       readonly />
+
+                <label>Merk</label>
+                <input type="text" name="merk"
+                       th:value="${sepedaRec?.getMerk()}" required />
+
+                <label>Model</label>
+                <input type="text" name="model"
+                       th:value="${sepedaRec?.getModel()}" required />
+
+                <label>Tahun</label>
+                <input type="number" name="tahun"
+                       th:value="${sepedaRec?.getTahun()}" required />
+
+                <label>Harga Sewa</label>
+                <input type="number" name="hargaSewa"
+                       th:value="${sepedaRec?.getHargaSewa()}" required />
+
+                <label>Tipe Sepeda</label>
+                <input type="text" name="tipe"
+                       th:value="${sepedaRec?.getTipe()}" required />
+
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+
+                <button type="submit" class="btn btn-primary" name="delete"
+                        th:data-confirm-delete="|Are you sure you want to delete ${sepedaRec?.getId()}?|"
+                        onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

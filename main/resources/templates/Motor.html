@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Motor Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Captain Motor</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/mobil}">Mobil</a></li>
+            <li><a th:href="@{/motor}">Motor</a></li>
+            <li><a th:href="@{/sepeda}">Sepeda</a></li>
+            <li><a th:href="@{/penyewa}">Penyewa</a></li>
+            <li><a th:href="@{/transaksi}">Transaksi</a></li>
+            <li><a th:href="@{/pembayaran}">Pembayaran</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="welcome-message" th:if="${logSeller != null}">
+        Welcome <span th:text="${logSeller.getKode()}"></span>
+    </div>
+
+    <!-- MOTOR LIST -->
+    <div class="first-box">
+        <h2>Motor List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Merk</th>
+                    <th>Model</th>
+                    <th>Tahun</th>
+                    <th>Harga Sewa</th>
+                    <th>Tipe Mesin</th>
+                    <th>Kapasitas Mesin (CC)</th>
+                </tr>
+            </thead>
+
+            <tbody th:each="m, no : ${motorList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+
+                    <td>
+                        <a th:href="@{/motor/{id}(id=${m.getId()})}"
+                           th:text="${m.getId()}"></a>
+                    </td>
+
+                    <td th:text="${m.getMerk()}"></td>
+                    <td th:text="${m.getModel()}"></td>
+                    <td th:text="${m.getTahun()}"></td>
+                    <td th:text="${m.getHargaSewa()}"></td>
+                    <td th:text="${m.getTipeMesin()}"></td>
+                    <td th:text="${m.getKapasitasMesin()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FORM MOTOR -->
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Motor</h2>
+
+            <form th:action="@{/motor}" method="post" th:object="${motorInfo}" class="form-group">
+
+                <label>ID</label>
+                <input type="number" name="id"
+                       th:value="${motorRec != null} ? ${motorRec.getId()} : ''"
+                       readonly />
+
+                <label>Merk</label>
+                <input type="text" name="merk" th:value="${motorRec?.getMerk()}" required />
+
+                <label>Model</label>
+                <input type="text" name="model" th:value="${motorRec?.getModel()}" required />
+
+                <label>Tahun</label>
+                <input type="number" name="tahun" th:value="${motorRec?.getTahun()}" required />
+
+                <label>Harga Sewa</label>
+                <input type="number" name="hargaSewa" th:value="${motorRec?.getHargaSewa()}" required />
+
+                <label>Tipe Mesin</label>
+                <input type="text" name="tipeMesin" th:value="${motorRec?.getTipeMesin()}" required />
+
+                <label>Kapasitas Mesin (CC)</label>
+                <input type="number" name="kapasitasMesin" th:value="${motorRec?.getKapasitasMesin()}" required />
+
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+
+                <button type="submit" class="btn btn-primary" name="delete"
+                        th:data-confirm-delete="|Are you sure you want to delete ${motorRec?.getId()}?|"
+                        onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    Delete
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

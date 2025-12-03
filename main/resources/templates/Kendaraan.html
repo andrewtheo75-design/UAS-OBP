@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Halaman Kendaraan</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+</head>
+
+<body>
+
+    <!-- LIST KENDARAAN -->
+    <div class="first-box">
+        <h2>Kendaraan List</h2>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Merk</th>
+                    <th>Model</th>
+                    <th>Tahun</th>
+                    <th>Harga Sewa</th>
+                </tr>
+            </thead>
+
+            <tbody th:each="d, no : ${kendaraanList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+
+                    <!-- Klik ID untuk edit -->
+                    <td>
+                        <a th:href="@{/kendaraan/{id}(id=${d.getId()})}"
+                           th:text="${d.getId()}"></a>
+                    </td>
+
+                    <td th:text="${d.getMerk()}"></td>
+                    <td th:text="${d.getModel()}"></td>
+                    <td th:text="${d.getTahun()}"></td>
+                    <td th:text="${d.getHargaSewa()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FORM KENDARAAN -->
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Kendaraan</h2>
+
+            <form th:action="@{/kendaraan}" method="post" 
+                  th:object="${kendaraanRec}" class="form-group">
+
+                <label>ID Kendaraan</label>
+                <input type="number" id="id" name="id"
+                       th:value="${kendaraanRec != null} ? ${kendaraanRec.getId()} : '0'"
+                       readonly />
+
+                <label>Merk</label>
+                <input type="text" id="merk" name="merk"
+                       th:value="${kendaraanRec?.getMerk()}" required />
+
+                <label>Model</label>
+                <input type="text" id="model" name="model"
+                       th:value="${kendaraanRec?.getModel()}" required />
+
+                <label>Tahun</label>
+                <input type="number" id="tahun" name="tahun"
+                       th:value="${kendaraanRec?.getTahun()}" required />
+
+                <label>Harga Sewa</label>
+                <input type="number" id="hargaSewa" name="hargaSewa"
+                       th:value="${kendaraanRec?.getHargaSewa()}" required />
+
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+                <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

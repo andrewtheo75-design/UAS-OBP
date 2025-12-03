@@ -1,0 +1,75 @@
+#feedback-form {
+    width: 380px;
+    margin: 0 auto;
+    padding: 32px 40px;
+    background: rgba(20,20,20,0.75);
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    border: 1px solid rgba(212,175,55,0.5);
+    box-shadow: 0 12px 48px rgba(212,175,55,0.32);
+}
+
+#feedback-form h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #f0d58c;
+    margin-bottom: 25px;
+    text-shadow: 0 0 6px rgba(240,213,140,0.7);
+}
+
+/* INPUT */
+#feedback-form input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(212,175,55,0.35);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    box-shadow: 0 4px 18px rgba(212,175,55,0.2);
+}
+
+#feedback-form input:focus {
+    border-color: #f0d58c;
+    outline: none;
+    box-shadow: 0 0 12px rgba(240,213,140,0.8);
+}
+
+/* BUTTONS GOLD */
+#feedback-form button {
+    width: 30%;
+    padding: 10px 0;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+/* ADD BUTTON */
+button[name=add] {
+    background: linear-gradient(135deg, #f5d98b, #d4af37);
+    color: #000;
+}
+button[name=add]:hover {
+    transform: scale(1.06);
+}
+
+/* EDIT */
+button[name=edit] {
+    background: #1f6feb;
+    color: #fff;
+}
+button[name=edit]:hover {
+    transform: scale(1.06);
+}
+
+/* DELETE */
+button[name=delete] {
+    background: #c82333;
+    color: #fff;
+}
+button[name=delete]:hover {
+    transform: scale(1.06);
+}

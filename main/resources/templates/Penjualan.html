@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Penjualan</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+
+<body>
+        <!-- NAVBAR START -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Penyewaan Kendaraan</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/laptop}">Laptop</a></li>
+            <li><a th:href="@{/handphone}">Handphone</a></li>
+            <li><a th:href="@{/tablet}">Tablet</a></li>
+            <li><a th:href="@{/penjualan}">Penjualan</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+    <!-- NAVBAR END -->
+
+<div class="first-box">
+    <h2>Daftar Penjualan</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Kode</th>
+                <th>PIC</th>
+                <th>Produk</th>
+                <th>Jumlah</th>
+                <th>Tanggal</th>
+                <th>Harga Jual</th>
+            </tr>
+        </thead>
+        <tbody th:each="d, no : ${penjualanList}">
+            <tr>
+                <td th:text="${no.count}"></td>
+                <td>
+                    <a th:href="@{/penjualan/{id}(id=${d.getSaleID})}"
+                       th:text="'sale000' + ${d.getSaleID}"></a>
+                </td>
+                <td th:text="${d.getPerson()?.getName()}"></td>
+
+                <!-- ✅ Kolom Produk tampil di tabel -->
+                <td th:text="${d.getProduk() != null ? d.getProduk().getTipe() + ' - ' + d.getProduk().getProdusen() : '-'}"></td>
+
+                <td th:text="${d.getJumlah()}"></td>
+                <td th:text="${#temporals.format(d.getTanggal(), 'dd MMM yyyy HH:mm:ss')}"></td>
+                <td th:text="'Rp' + ${#numbers.formatDecimal(d.getHargaJual(), 1, 'POINT', 0, 'COMMA')}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="second-box">
+    <div id="feedback-form">
+        <h2 class="header">Form Management</h2>
+
+        <form th:action="${penjualanInfo.saleID == null} ? @{/penjualan/submit} : @{/penjualan/submit/{id}(id=${penjualanInfo.saleID})}"
+              method="post" th:object="${penjualanInfo}" class="form-group">
+            <!-- Hidden ID -->
+            <input type="hidden" th:field="*{saleID}" />
+
+            <label for="id" class="form-label">Kode Penjualan</label>
+            <input type="number" id="id"
+                   th:value="*{saleID != null ? saleID : 0}"
+                   readonly />
+
+            <label for="person" class="form-label">PIC</label>
+            <select id="person" th:field="*{person}">
+                <option value="">-- Pilih PIC --</option>
+                <option th:each="p : ${personList}"
+                        th:value="${p.getId()}"
+                        th:text="${p.getName()}">
+                </option>
+            </select>
+            <br/>
+
+            <!-- ✅ Produk Dropdown -->
+            <label for="produk" class="form-label">Produk</label>
+            <select id="produk" th:field="*{produk}">
+                <option value="">-- Pilih Produk --</option>
+                <option th:each="prod : ${listProduk}"
+                        th:value="${prod.getId()}"
+                        th:text="${prod.getTipe()} + ' - ' + ${prod.getProdusen()} + ' (' + ${prod.getRam()} + ' GB)'">
+                </option>
+            </select>
+            <br/>
+
+            <label for="jumlah" class="form-label">Jumlah Barang</label>
+            <input type="number" id="jumlah" th:field="*{jumlah}" required />
+
+            <label for="tanggal" class="form-label">Tanggal Transaksi</label>
+            <br/>
+            <input type="datetime-local" id="tanggal" th:field="*{tanggal}" required />
+            <br/>
+
+            <label for="hargaJual" class="form-label">Harga Jual</label>
+            <input type="number" id="hargaJual" th:field="*{hargaJual}" required />
+
+            <button type="submit" class="btn btn-primary" name="add">Add</button>
+            <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+            <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

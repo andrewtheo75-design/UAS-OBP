@@ -1,0 +1,28 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@DiscriminatorValue("Seller")
+public class Seller extends Person {
+
+    @Size(min = 8)
+    private String password;
+
+    public Seller() {}
+
+    public Seller(String kode, String name, String noHP, String password) {
+        super(kode, name, noHP);
+        this.password = password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}

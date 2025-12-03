@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <title>Halaman Produk</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+</head>
+
+<body>
+    <div class="first-box">
+        <h2>Produk List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tipe</th>
+                    <th>Produsen</th>
+                    <th>Ram</th>
+                </tr>
+            </thead>
+            <tbody th:each="d, no : ${produkList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+                    <td><a th:href="@{/produk/{id}(id=${d.getId()})}" th:text="${d.getTipe()}"></a></td>
+                    <td th:text="${d.getProdusen()}"></td>
+                    <td th:text="${d.getRam()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management</h2>
+            <form th:action="@{/produk}" method="post"
+                th:object="${produkInfo}" class="form-group">
+                
+                <label for="id" class="form-label">ID Produk</label>
+                <input type="number" id="id" name="id"
+                    th:value="${produkRec != null} ? ${produkRec.getId()}: '0'" readonly />
+                
+                <label for="tipe" class="form-label">Tipe</label>
+                <input type="text" id="tipe" name="tipe" th:value="${produkRec?.getTipe()}" required />
+                
+                <label for="produsen" class="form-label">Produsen</label>
+                <input type="text" id="produsen" name="produsen" th:value="${produkRec?.getProdusen()}" required />
+                
+                <label for="ram" class="form-label">Ram</label>
+                <input type="number" id="ram" name="ram" th:value="${produkRec?.getRam()}" required />
+                
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+                <button type="submit" class="btn btn-primary" name="delete">Delete</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

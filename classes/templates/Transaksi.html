@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transaksi Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Captain Transaksi</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/mobil}">Mobil</a></li>
+            <li><a th:href="@{/motor}">Motor</a></li>
+            <li><a th:href="@{/sepeda}">Sepeda</a></li>
+            <li><a th:href="@{/penyewa}">Penyewa</a></li>
+            <li><a th:href="@{/transaksi}">Transaksi</a></li>
+            <li><a th:href="@{/pembayaran}">pembayaran</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="welcome-message" th:if="${logSeller != null}">
+        Welcome <span th:text="${logSeller.getKode()}"></span>
+    </div>
+
+    <!-- TRANSAKSI LIST -->
+    <div class="first-box">
+        <h2>Transaksi List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Penyewa</th>
+                    <th>Kendaraan</th>
+                    <th>Lama Sewa (hari)</th>
+                    <th>Total Harga</th>
+                </tr>
+            </thead>
+
+            <tbody th:each="t, no : ${transaksiList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+
+                    <td>
+                        <a th:href="@{/transaksi/{id}(id=${t.id})}"
+                           th:text="${t.id}"></a>
+                    </td>
+
+                    <td th:text="${t.penyewa.nama}"></td>
+                    <td th:text="${t.kendaraan.merk}"></td>
+                    <td th:text="${t.lamaSewa}"></td>
+                    <td th:text="${t.totalHarga}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FORM TRANSAKSI -->
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Transaksi</h2>
+
+            <form th:action="@{/transaksi}" method="post" th:object="${transaksiRec}" class="form-group">
+
+    <!-- Hidden input untuk kirim ID ke server -->
+    <input type="hidden" name="idTransaksi" th:value="${transaksiRec?.id}" />
+
+    <label>ID</label>
+    <input type="number" th:value="${transaksiRec?.id}" readonly />
+
+    <label>Penyewa</label>
+    <select name="penyewa" required>
+        <option value="">-- Pilih Penyewa --</option>
+        <option th:each="p : ${penyewaList}"
+                th:value="${p.id}"
+                th:text="${p.nama}"
+                th:selected="${transaksiRec?.penyewa?.id == p.id}">
+        </option>
+    </select>
+
+    <label>Kendaraan</label>
+    <select name="kendaraan" required>
+        <option value="">-- Pilih Kendaraan --</option>
+        <option th:each="k : ${kendaraanList}"
+                th:value="${k.id}"
+                th:text="${k.merk + ' ' + k.model}"
+                th:selected="${transaksiRec?.kendaraan?.id == k.id}">
+        </option>
+    </select>
+
+    <label>Lama Sewa (hari)</label>
+    <input type="number" name="lamaSewa" th:value="${transaksiRec?.lamaSewa}" required />
+
+    <label>Total Harga</label>
+    <input type="number" name="totalHarga" th:value="${transaksiRec?.totalHarga}" required />
+
+    <button type="submit" name="add">Add</button>
+    <button type="submit" name="edit">Edit</button>
+
+    <input type="hidden" name="idTransaksi" th:value="${transaksiRec?.id}" />
+    <button type="submit" name="delete">Delete</button>
+
+</form>
+
+        </div>
+    </div>
+
+</body>
+</html>

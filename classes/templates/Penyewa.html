@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Penyewa Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" />
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo">Captain Penyewa</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a th:href="@{/mobil}">Mobil</a></li>
+            <li><a th:href="@{/motor}">Motor</a></li>
+            <li><a th:href="@{/sepeda}">Sepeda</a></li>
+            <li><a th:href="@{/penyewa}">Penyewa</a></li>
+            <li><a th:href="@{/transaksi}">Transaksi</a></li>
+            <li><a th:href="@{/pembayaran}">pembayaran</a></li>
+        </ul>
+        <div class="nav-right">
+            <a th:href="@{/sellerlogout}" class="logout-button">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="welcome-message" th:if="${logSeller != null}">
+        Welcome <span th:text="${logSeller.getKode()}"></span>
+    </div>
+
+    <!-- PENYEWA LIST -->
+    <div class="first-box">
+        <h2>Penyewa List</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>No HP</th>
+                    <th>Alamat</th>
+                </tr>
+            </thead>
+
+            <tbody th:each="p, no : ${penyewaList}">
+                <tr>
+                    <td th:text="${no.count}"></td>
+
+                    <td>
+                        <a th:href="@{/penyewa/{id}(id=${p.id})}"
+                           th:text="${p.id}"></a>
+                    </td>
+
+                    <td th:text="${p.nama}"></td>
+                    <td th:text="${p.noHP}"></td>
+                    <td th:text="${p.alamat}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FORM PENYEWA -->
+    <div class="second-box">
+        <div id="feedback-form">
+            <h2 class="header">Form Management Penyewa</h2>
+
+            <form th:action="@{/penyewa}" method="post" th:object="${penyewaInfo}" class="form-group">
+
+                <label>ID</label>
+                <input type="number" name="id"
+                       th:value="${penyewaRec != null} ? ${penyewaRec.id} : ''"
+                       readonly />
+
+                <label>Nama</label>
+                <input type="text" name="nama" th:value="${penyewaRec?.nama}" required />
+
+                <label>No HP</label>
+                <input type="text" name="noHP" th:value="${penyewaRec?.noHP}" required />
+
+                <label>Alamat</label>
+                <input type="text" name="alamat" th:value="${penyewaRec?.alamat}" required />
+
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+                <button type="submit" class="btn btn-primary" name="edit">Edit</button>
+
+                <button type="submit" class="btn btn-primary" name="delete"
+                        th:data-confirm-delete="|Are you sure you want to delete penyewa ID ${penyewaRec?.id}?|"
+                        onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                    Delete
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

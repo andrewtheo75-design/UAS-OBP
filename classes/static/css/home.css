@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #0b0b0b;
+    font-family: "Poppins", sans-serif;
+    color: #f5f5f5;
+}
+
+.welcome-message {
+    width: fit-content;
+    margin: 20px auto;
+    padding: 10px 22px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f0d58c;
+    background: rgba(212,175,55,0.18);
+    border: 1px solid rgba(212,175,55,0.4);
+    box-shadow: 0 6px 18px rgba(212,175,55,0.25);
+}
+
+/* FLOATING GOLD BOX */
+.first-box, .second-box {
+    width: 90%;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(15,15,15,0.82);
+    backdrop-filter: blur(16px);
+    border-radius: 28px;
+    border: 1px solid rgba(212,175,55,0.35);
+    box-shadow: 0 10px 40px rgba(212,175,55,0.25);
+    transition: 0.3s ease;
+}
+
+.first-box:hover, .second-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 55px rgba(212,175,55,0.35);
+}
+
+h2 {
+    color: #f0d58c;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 0 6px rgba(240,213,140,0.7);
+}
